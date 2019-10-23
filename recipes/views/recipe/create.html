@@ -1,0 +1,164 @@
+<html>
+  <head>
+    <script>
+      var ingredientsCounter = 1;
+      var stepsCounter = 1;
+
+      function setStepCount(count) {
+        stepsCounter = count;
+      }
+      function setIngredientCount(count) {
+        ingredientsCounter = count;
+      }
+      function getStepCount() {
+        return stepsCounter;
+      }
+      function getIngredientCount() {
+        return ingredientsCounter;
+      }
+
+      function addIngredient(count) {
+        var li = document.createElement("li");
+        li.className = "ingredient";
+
+        newIngredient = `<span>
+              <label>Amount</label>
+              <select name="ingredients[${count}][quantity]">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </span>
+            <span>
+              <label>UOM</label>
+              <select name="ingredients[${count}][unit]">
+                <option value="cup">cup</option>
+                <option value="oz">oz</option>
+                <option value="lb">lb</option>
+                <option value="qt">qt</option>
+                <option value="pt">pt</option>
+                <option value="teaspoon">teaspoon</option>
+                <option value="tablespoon">tablespoon</option>
+              </select>
+            </span>
+            <span>
+              <label>Ingredient</label>
+              <input type="text" name="ingredients[${count}][name]" />
+            </span>`;
+        li.innerHTML = newIngredient;
+
+        var appendElement = "ingredientsContainer";
+
+        document
+          .getElementById(appendElement)
+          .getElementsByTagName("ul")[0]
+          .appendChild(li);
+      }
+
+      function addStep(count) {
+        var li = document.createElement("li");
+        li.className = "step";
+
+        var label = document.createElement("label");
+        label.innerHTML = "Step";
+
+        var input = document.createElement("input");
+        input.type = "text";
+
+        var hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.value = count;
+
+        hiddenInput.name = `steps[${count}][step][stepNumber]`;
+        input.name = `steps[${count}][step][stepText]`;
+        li.appendChild(label);
+        li.appendChild(hiddenInput);
+        li.appendChild(input);
+
+        var appendElement = "stepsContainer";
+
+        document
+          .getElementById(appendElement)
+          .getElementsByTagName("ul")[0]
+          .appendChild(li);
+      }
+    </script>
+    <style>
+      .container {
+        display: block;
+      }
+      ul {
+        padding: 0;
+      }
+      .ingredient,
+      .step {
+        display: block;
+      }
+      .submitButton {
+        display: block;
+      }
+    </style>
+    <title>Recipes</title>
+  </head>
+  <body>
+    <form action="/recipe/submit" method="post">
+      <label>Recipe Name</label><input type="text" name="name" />
+      <div class="container" id="ingredientsContainer">
+        <ul>
+          <li class="ingredient">
+            <span>
+              <label>Amount</label>
+              <select name="ingredients[1][quantity]">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </span>
+            <span>
+              <label>UOM</label>
+              <select name="ingredients[1][unit]">
+                <option value="cup">cup</option>
+                <option value="oz">oz</option>
+                <option value="lb">lb</option>
+                <option value="qt">qt</option>
+                <option value="pt">pt</option>
+                <option value="teaspoon">teaspoon</option>
+                <option value="tablespoon">tablespoon</option>
+              </select>
+            </span>
+            <span>
+              <label>Ingredient</label>
+              <input type="text" name="ingredients[1][name]" />
+            </span>
+          </li>
+        </ul>
+        <button
+          type="button"
+          onclick="setIngredientCount(getIngredientCount()+1);addIngredient(getIngredientCount());"
+        >
+          Add Ingredient
+        </button>
+      </div>
+
+      <div class="container" id="stepsContainer">
+        <ul>
+          <li class="step">
+            <label>Step</label>
+            <input type="hidden" name="steps[1][step][stepNumber]" value="1" />
+            <input type="text" name="steps[1][step][stepText]" />
+          </li>
+        </ul>
+        <button
+          type="button"
+          onclick="setStepCount(getStepCount()+1); addStep(getStepCount());"
+        >
+          Add Step
+        </button>
+      </div>
+
+      <input class="submitButton" type="submit" />
+    </form>
+  </body>
+</html>
