@@ -1,5 +1,6 @@
 const Recipe = require("../models/recipe");
 const ih = require("./ingredientHelper");
+const ch = require("./cuisineHelper")
 const bh = require("./baseHelper");
 
 const getRecipeById = id => {
@@ -28,10 +29,19 @@ const updateRecipeById = (id, update) => {
 const buildRecipe = recipe => {
   let recipeData = recipe;
   recipeData["slug"] = bh.getSlug(recipeData.name);
+
+  // Register ingredients
   recipeData["ingredients"] = ih.applySlugToIngredients(
     recipeData["ingredients"]
   );
-  ih.registerIngredients(recipeData.ingredients);
+  ih.registerIngredients(recipeData.ingredients);  
+
+  // Register cuisine
+  recipeData["cuisine"] = ch.applySlugToCuisine(
+    recipeData["cuisine"]
+  );  
+  ch.registerCuisine(recipeData.cuisine);
+
   bh.createItemByModel(Recipe, recipeData, createRecipe);
 
   return recipe;

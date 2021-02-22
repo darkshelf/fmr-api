@@ -22,6 +22,11 @@ function sendViewMiddleware(req, res, next) {
 app.use(sendViewMiddleware);
 app.use(morgan("dev"));
 
+// CORS
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
 var recipeRouter = require("./routes/recipe");
 
 // viewed at http://localhost:8080
@@ -41,10 +46,7 @@ console.log("server on http://localhost:8080");
 
 //Set up default mongoose connection
 var mongoDB = "mongodb://127.0.0.1/feedMeRight";
-mongoose.connect(
-  mongoDB,
-  { useNewUrlParser: true }
-);
+mongoose.connect(mongoDB, { useNewUrlParser: true });
 
 console.log("db connection on mongodb://127.0.0.1");
 

@@ -1,8 +1,9 @@
 var rh = require("../helpers/recipeHelper");
 
 // Display list of all Recipes.
-exports.listRecipes = function(req, res) {
-  res.send("NOT IMPLEMENTED: Recipe list");
+exports.listRecipes = async function(req, res) {
+  const recipes = await rh.getAllRecipes();
+  res.status(200).json(recipes);
 };
 async (req, res) => {
   const todoId = req.params.id;
@@ -13,8 +14,7 @@ async (req, res) => {
 exports.showRecipe = async function(req, res) {
   const slug = req.params.slug;
   const recipe = await rh.getRecipeBySlug(slug);
-  // res.status(200).json(recipe);
-  res.render("recipe/showRecipe.html");
+  res.status(200).json(recipe);
 };
 
 // Create new Recipe
